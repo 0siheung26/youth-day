@@ -1,164 +1,377 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>제5회 청춘아울렛 부스 카운터</title>
-    <style>
-        body { font-family: 'Noto Sans KR', sans-serif; max-width: 600px; margin: 0 auto; padding: 15px; background-color: #f4f6f9; color: #333; }
-        h2 { text-align: center; color: #1e3a8a; margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 20px; }
-        .category-title { font-size: 1.15rem; font-weight: bold; padding: 8px 12px; margin-top: 25px; margin-bottom: 10px; border-radius: 6px; background-color: #e2e8f0; color: #1e293b; border-left: 5px solid #2563eb; }
-        .card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
-        .group-name { font-size: 0.85rem; color: #6b7280; margin-bottom: 3px; font-weight: 500; }
-        .booth-name { font-size: 1.05rem; font-weight: bold; margin-bottom: 8px; color: #111827; line-height: 1.3; }
-        .count-info { font-size: 0.95rem; color: #374151; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
-        .count-display { font-size: 1.5rem; color: #2563eb; font-weight: bold; }
-        button { background-color: #2563eb; color: white; border: none; padding: 10px; border-radius: 6px; font-size: 0.95rem; font-weight: bold; cursor: pointer; width: 100%; transition: background-color 0.2s; }
-        button:active { background-color: #1d4ed8; }
-        button:disabled { background-color: #9ca3af; cursor: not-allowed; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 제5회 시흥 청년의 날 부스 방문자 집계</title>
+  <style>
+    :root {
+      --primary: #4A90E2;
+      --bg: #F5F7FA;
+      --card-bg: #FFFFFF;
+      --text: #333333;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 16px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+      color: #1A252C;
+    }
+    .header p {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 0;
+    }
+    .booth-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .booth-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .booth-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .count-badge {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 12px;
+    }
+    .btn-open-modal {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      font-size: 0.95rem;
+    }
+    .btn-open-modal:active {
+      opacity: 0.85;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .form-group input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #DDD;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 0.95rem;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .cat-btn {
+      padding: 10px 6px;
+      border: 1px solid #E0E0E0;
+      background: #F9F9F9;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 500;
+    }
+    .cat-btn.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      font-weight: bold;
+    }
+    .privacy-box {
+      background: #F8F9FA;
+      border: 1px solid #E9ECEF;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.75rem;
+      color: #555;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .privacy-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-submit {
+      flex: 2;
+      background: #28A745;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-cancel {
+      flex: 1;
+      background: #6C757D;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-    <h2>🎪 제5회 청춘아울렛 부스 현황</h2>
-    <div class="subtitle">실시간 참여자 방문 카운터</div>
+  <div class="header">
+    <h1>2026 제5회 시흥 청년의 날</h1>
+    <p>부스 방문객 명부 등록 시스템</p>
+  </div>
+
+  <div class="booth-grid" id="boothGrid">
+    <div style="text-align:center; grid-column: 1/-1; padding: 40px; color: #888;">
+      데이터를 불러오는 중입니다...
+    </div>
+  </div>
+
+  <!-- 입력 모달 팝업 -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <div class="modal-header" id="modalBoothTitle">부스 정보</div>
+      
+      <div class="form-group">
+        <label for="userName">방문자 이름 <span style="color:red;">*</span></label>
+        <input type="text" id="userName" placeholder="이름을 입력해 주세요">
+      </div>
+
+      <div class="form-group">
+        <label>성별 / 연령대 선택 <span style="color:red;">*</span></label>
+        <div class="category-grid">
+          <button type="button" class="cat-btn" onclick="selectCategory(this, '20미만(남)')">20미만(남)</button>
+          <button type="button" class="cat-btn" onclick="selectCategory(this, '20미만(여)')">20미만(여)</button>
+          <button type="button" class="cat-btn" onclick="selectCategory(this, '20-24(남)')">20-24(남)</button>
+          <button type="button" class="cat-btn" onclick="selectCategory(this, '20-24(여)')">20-24(여)</button>
+          <button type="button" class="cat-btn" onclick="selectCategory(this, '25-39(남)')">25-39(남)</button>
+          <button type="button" class="cat-btn" onclick="selectCategory(this, '25-39(여)')">25-39(여)</button>
+          <button type="button" class="cat-btn" onclick="selectCategory(this, '39초과(남)')">39초과(남)</button>
+          <button type="button" class="cat-btn" onclick="selectCategory(this, '39초과(여)')">39초과(여)</button>
+        </div>
+      </div>
+
+      <div class="privacy-box">
+        <strong>[개인정보 수집 및 이용 동의 안내]</strong><br>
+        • 수집·이용 목적: 2026 제5회 청년의 날 기념행사 방문객 집계<br>
+        • 수집 항목: 이름, 성별, 연령대<br>
+        • 보유 및 이용 기간: 행사 종료 및 성과 보고 완료 후 90일 이내 파기<br>
+        * 동의를 거부할 수 있으나, 거부 시 이벤트 참여가 제한될 수 있습니다.
+      </div>
+
+      <div class="privacy-checkbox">
+        <input type="checkbox" id="privacyAgree">
+        <label for="privacyAgree">개인정보 수집 및 이용에 동의합니다.</label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">취소</button>
+        <button class="btn-submit" onclick="submitData()">등록하기</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzH81dkgxfg5kacv3cQtbJ0uXYTya5kuFQk5o1Ot95HL8s49UiHKZgGH9rOOY-7PoZV/exec";
     
-    <div id="booth-list">데이터를 불러오는 중입니다...</div>
+    // 47개 부스 목록
+    const booths = [
+      "1. 청년정책플러스", "2. 시흥청년협의체", "3. 청년스테이션", "4. 청년예술가",
+      "5. 청년창업지원", "6. 일자리센터", "7. 마음건강상담", "8. 청년협동조합",
+      "9. 시흥청년네트워크", "10. 청년문화마을", "11. 청소년재단", "12. 시흥시의회",
+      "13. 대학생기획단", "14. 청년공동체", "15. 사회적기업", "16. 시흥창업센터",
+      "17. 지역활력소", "18. 청년동아리A", "19. 청년동아리B", "20. 청년동아리C",
+      "21. 스타트업Zone", "22. 핸드메이드마켓A", "23. 핸드메이드마켓B", "24. 체험부스1",
+      "25. 체험부스2", "26. 체험부스3", "27. 체험부스4", "28. 푸드트럭Zone1",
+      "29. 푸드트럭Zone2", "30. 포토존", "31. 이벤트Zone", "32. 상담Zone",
+      "33. 청년농부", "34. 로컬크리에이터", "35. 환경캠페인", "36. 서포터즈",
+      "37. 시흥시청소년수련관", "38. 정왕청소년문화의집", "39. 목감청소년문화의집", "40. 배곧청소년문화의집",
+      "41. 신천청소년문화의집", "42. 능곡청소년문화의집", "43. 군자동청소년문화의집", "44. 월곶청소년문화의집",
+      "45. 과림청소년문화의집", "46. 운영본부", "47. 의료지원단"
+    ];
 
-    <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzH81dkgxfg5kacv3cQtbJ0uXYTya5kuFQk5o1Ot95HL8s49UiHKZgGH9rOOY-7PoZV/exec";
+    let currentBooth = "";
+    let selectedCategory = "";
+    let boothCounts = {};
 
-        // 47개 전체 부스 목록 데이터
-        const boothData = [
-            {
-                category: "🛍️ 청플마켓",
-                items: [
-                    { group: "1. 에스디지컴퍼니", name: "천냥마트" },
-                    { group: "2. 롱앤봄", name: "커피박으로 놀자" },
-                    { group: "3. 네모지구공방", name: "네모지구공방의 제로웨이스트&양말목공예" },
-                    { group: "4. 시흥 딜라잇공방", name: "시흥 딜라잇공방" },
-                    { group: "5. 오어오브제", name: "오어오브제" },
-                    { group: "6. 큐트큐트", name: "귀엽고 귀여운 소품 세상" },
-                    { group: "7. 씨캐스트", name: "초록방울" },
-                    { group: "8. 청년협업마을 뉴프랜드", name: "시흥시 청년 창업가 콜라보 부스 in 청년협업마을" },
-                    { group: "9. 라탄공방오브비/청문함(서보은)", name: "라탄 공방 오브비" },
-                    { group: "10. 달월마켓", name: "달월마켓_나만의 컵꾸하기" }
-                ]
-            },
-            {
-                category: "🏛️ 청년정책플러스",
-                items: [
-                    { group: "1. 시흥시청소년청년재단", name: "시흥시청소년청년재단 테니샵" },
-                    { group: "2. 청년스테이션(청년성장프로젝트)", name: "2026 시흥 청년 취업 클래스 '청성프'" },
-                    { group: "3. 한국공학대학교", name: "한국공학대학교 대학일자리플러스센터" },
-                    { group: "4. 청년청소년과 청년정책팀", name: "[시흥청년알리미] SNS 홍보 이벤트" },
-                    { group: "5. 시흥시정신건강복지센터", name: "내마음 알아보기: 우울 자가진단 및 마음돌봄부스" },
-                    { group: "6. (사)가치있는누림 시흥지부", name: "청년도전지원사업, 당신의 도전 신호 ON" },
-                    { group: "7. 시흥여성인력개발센터", name: "돌려라 룰렛, 펼쳐라 커리어!" },
-                    { group: "8. 시흥고용복지플러스센터", name: "고용노동부안산고용노동지청 시흥고용복지플러스센터" }
-                ]
-            },
-            {
-                category: "🎨 청년동아리지원사업",
-                items: [
-                    { group: "1. mvp", name: "Volleyball Party" },
-                    { group: "2. 병아리크루", name: "“너… 혹시 악력 몇이야?”악력챌린지" },
-                    { group: "3. 청년서포터즈 매일", name: "청년서포터즈 매일의 스트레스 클리닉" },
-                    { group: "4. 500", name: "500의 맛지도&콜라챌린지" },
-                    { group: "5. 카드뭉치", name: "시흥시 청년 보드게임&타로 동아리 '카드뭉치'" },
-                    { group: "6. 틈새기획단", name: "컬러컬러링" },
-                    { group: "7. 아티스트웨이", name: "아티스트웨이" },
-                    { group: "8. 핑크덤벨", name: "핑크 덤벨" },
-                    { group: "9. 입소문낫단", name: "입소문낫단-시흥 로컬 맛집 큐레이션 채널" },
-                    { group: "10. 불량패션", name: "나만의 키링 만들기" },
-                    { group: "11. 청년정책협의체 공동체복지분과", name: "청년정책협의체 공동체복지분과-고립·은둔 청년 인식 설문조사" },
-                    { group: "12. 두드림", name: "청년의 시간을 맞춰라! 청년문화예술정책 설문 &9.19초 챌린지" },
-                    { group: "13. mecha_lab", name: "MechaLab과 함께하는 공학 체험기" },
-                    { group: "14. 미미당", name: "ME:OK 스탬프 팝업 체험" },
-                    { group: "15. 익투스", name: "책장 속에 담는 오늘의 우리: 보드게임&DIY 사진 책갈피 만들기" },
-                    { group: "16. 탁상공론", name: "탁상공론" },
-                    { group: "17. 청춘동행", name: "내 손안의 안정, 워리스톤(Worry Stone)" },
-                    { group: "18. 어푸어푸", name: "수영하는 청년들, 어푸어푸" },
-                    { group: "19. 해답", name: "해답: 바다에서 답을 찾다" },
-                    { group: "20. 터틀즈", name: "터틀즈" },
-                    { group: "21. 씨부엉", name: "코딩 좀 할 줄 아세요?" },
-                    { group: "22. P_use", name: "P_use Archive(퓨즈아카이브)" },
-                    { group: "23. 말꽃도서관", name: "다 함께 자유로운 동화책, 말꽃도서관" }
-                ]
-            },
-            {
-                category: "🖼️ 전시존",
-                items: [
-                    { group: "상가(1071) | 경기과학기술대학교 '잔상'", name: "경기과학기술대학교 '잔상' 동아리 전시" },
-                    { group: "상가(1137) | 청년문화예술지원사업_우리들의 별(북페어)", name: "우리들의 별" },
-                    { group: "가로상점1 | 레코더즈", name: "좋아하는 순간을 사진으로 기록하는 사람들, 레코더즈" },
-                    { group: "가로상점2 | 청년문화예술지원사업_아트플리마켓", name: "아트플리마켓" },
-                    { group: "가로상점3 | 작업할건대학교 시흥", name: "작업할건대학교 시흥 아트 예술상점 2호" },
-                    { group: "가로상점4 | 작업할건대학원 시흥", name: "작업할건대학원 시흥 아트 예술상점 1호" }
-                ]
+    function init() {
+      booths.forEach(b => boothCounts[b] = 0);
+      fetchCounts();
+    }
+
+    function fetchCounts() {
+      fetch(GAS_URL)
+        .then(res => res.json())
+        .then(res => {
+          if (res.result === "success") {
+            const data = res.data;
+            // 초기화
+            booths.forEach(b => boothCounts[b] = 0);
+            
+            // 데이터 수 집계 (행 개수 기준)
+            for (let i = 1; i < data.length; i++) {
+              const boothName = data[i][1];
+              if (boothCounts[boothName] !== undefined) {
+                boothCounts[boothName]++;
+              }
             }
-        ];
+            renderGrid();
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          renderGrid();
+        });
+    }
 
-        let currentCounts = {};
+    function renderGrid() {
+      const grid = document.getElementById("boothGrid");
+      grid.innerHTML = "";
+      booths.forEach(booth => {
+        const card = document.createElement("div");
+        card.className = "booth-card";
+        card.innerHTML = `
+          <div>
+            <div class="booth-title">${booth}</div>
+            <div class="count-badge">누적 방문: <strong>${boothCounts[booth]}</strong>명</div>
+          </div>
+          <button class="btn-open-modal" onclick="openModal('${booth}')">방문자 등록</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
 
-        async function fetchCounts() {
-            try {
-                const response = await fetch(SCRIPT_URL);
-                currentCounts = await response.json();
-                renderBooths();
-            } catch (e) {
-                console.error("데이터 로딩 실패", e);
-            }
-        }
+    function openModal(boothName) {
+      currentBooth = boothName;
+      selectedCategory = "";
+      document.getElementById("modalBoothTitle").innerText = `[${boothName}] 방문 등록`;
+      document.getElementById("userName").value = "";
+      document.getElementById("privacyAgree").checked = false;
+      
+      // 카테고리 버튼 초기화
+      document.querySelectorAll(".cat-btn").forEach(btn => btn.classList.remove("selected"));
+      
+      document.getElementById("modalOverlay").style.display = "flex";
+    }
 
-        function renderBooths() {
-            const listDiv = document.getElementById("booth-list");
-            listDiv.innerHTML = "";
+    function closeModal() {
+      document.getElementById("modalOverlay").style.display = "none";
+    }
 
-            boothData.forEach(cat => {
-                const catHeader = document.createElement("div");
-                catHeader.className = "category-title";
-                catHeader.innerText = cat.category;
-                listDiv.appendChild(catHeader);
+    function selectCategory(btn, category) {
+      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selectedCategory = category;
+    }
 
-                cat.items.forEach(booth => {
-                    const countKey = `${booth.group} - ${booth.name}`;
-                    const count = currentCounts[countKey] || 0;
+    function submitData() {
+      const name = document.getElementById("userName").value.trim();
+      const agree = document.getElementById("privacyAgree").checked;
 
-                    const card = document.createElement("div");
-                    card.className = "card";
-                    card.innerHTML = `
-                        <div class="group-name">${booth.group}</div>
-                        <div class="booth-name">${booth.name}</div>
-                        <div class="count-info">
-                            <span>현재 참여 인원</span>
-                            <span class="count-display">${count}명</span>
-                        </div>
-                        <button onclick="addParticipant('${countKey}', this)">방문 카운트 +1</button>
-                    `;
-                    listDiv.appendChild(card);
-                });
-            });
-        }
+      if (!name) {
+        alert("이름을 입력해 주세요.");
+        return;
+      }
+      if (!selectedCategory) {
+        alert("성별/연령대를 선택해 주세요.");
+        return;
+      }
+      if (!agree) {
+        alert("개인정보 수집 및 이용 동의에 체크해 주세요.");
+        return;
+      }
 
-        async function addParticipant(boothKey, btnElement) {
-            btnElement.disabled = true;
-            btnElement.innerText = "기록 중...";
+      const payload = {
+        boothName: currentBooth,
+        userName: name,
+        category: selectedCategory,
+        agreed: agree
+      };
 
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: "POST",
-                    body: JSON.stringify({ boothName: boothKey })
-                });
-            } catch (e) {
-                alert("기록 중 오류가 발생했습니다.");
-            } finally {
-                fetchCounts();
-            }
-        }
+      // 즉시 화면 카운트 반영
+      boothCounts[currentBooth]++;
+      renderGrid();
+      closeModal();
 
-        fetchCounts();
-    </script>
+      // GAS 데이터 전송
+      fetch(GAS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        console.log("저장 완료");
+      }).catch(err => {
+        console.error("저장 실패", err);
+      });
+    }
+
+    window.onload = init;
+  </script>
 </body>
 </html>
