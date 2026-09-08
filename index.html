@@ -237,9 +237,9 @@
   </div>
 
   <script>
-    const GAS_URL ="https://script.google.com/macros/s/AKfycbye7Az79kLU8GzvN10PfS2mWQW1mvW5hZleMZ-KLjYNJv0eXVIbVosrI1sLLu7Z4oHYGw/exec";
+    // 방금 발급해주신 최신 GAS 웹 앱 URL 반영
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbx7K2-pcqW-SuSGLIBpH9QxNE4QPr-O6azqh_-VQRMEn0qrw6wnFUQUL_ftkA4Fck43sg/exec";
     
-    // 47개 부스 목록
     const booths = [
       "1. 청년정책플러스", "2. 시흥청년협의체", "3. 청년스테이션", "4. 청년예술가",
       "5. 청년창업지원", "6. 일자리센터", "7. 마음건강상담", "8. 청년협동조합",
@@ -265,26 +265,30 @@
     }
 
     function fetchCounts() {
+      // 2초 후 무조건 강제 화면 출력 (로딩 멈춤 방지 안전장치)
+      const forceRenderTimer = setTimeout(() => {
+        renderGrid();
+      }, 2000);
+
       fetch(GAS_URL)
         .then(res => res.json())
         .then(res => {
-          if (res.result === "success") {
-            const data = res.data;
-            // 초기화
+          clearTimeout(forceRenderTimer);
+          if (res.result === "success" && Array.isArray(res.data)) {
             booths.forEach(b => boothCounts[b] = 0);
-            
-            // 데이터 수 집계 (행 개수 기준)
+            const data = res.data;
             for (let i = 1; i < data.length; i++) {
               const boothName = data[i][1];
               if (boothCounts[boothName] !== undefined) {
                 boothCounts[boothName]++;
               }
             }
-            renderGrid();
           }
+          renderGrid();
         })
         .catch(err => {
-          console.error(err);
+          clearTimeout(forceRenderTimer);
+          console.error("데이터 로딩 중 예외 발생:", err);
           renderGrid();
         });
     }
@@ -313,9 +317,7 @@
       document.getElementById("userName").value = "";
       document.getElementById("privacyAgree").checked = false;
       
-      // 카테고리 버튼 초기화
       document.querySelectorAll(".cat-btn").forEach(btn => btn.classList.remove("selected"));
-      
       document.getElementById("modalOverlay").style.display = "flex";
     }
 
@@ -353,21 +355,19 @@
         agreed: agree
       };
 
-      // 즉시 화면 카운트 반영
+      // 화면에 반영 후 모달 닫기
       boothCounts[currentBooth]++;
       renderGrid();
       closeModal();
 
-      // GAS 데이터 전송
+      // 구글 시트로 데이터 전송
       fetch(GAS_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      }).then(() => {
-        console.log("저장 완료");
       }).catch(err => {
-        console.error("저장 실패", err);
+        console.error("데이터 전송 오류:", err);
       });
     }
 
