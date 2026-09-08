@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청춘아울렛 부스 참여 카운터</title>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; color: #333; }
+        h2 { text-align: center; color: #1e3a8a; margin-bottom: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        .booth-name { font-size: 1.15rem; font-weight: bold; margin-bottom: 10px; color: #111827; }
+        .count-info { font-size: 1rem; color: #4b5563; margin-bottom: 12px; }
+        .count-display { font-size: 1.8rem; color: #2563eb; font-weight: bold; }
+        button { background-color: #2563eb; color: white; border: none; padding: 12px 15px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; transition: background-color 0.2s; }
+        button:active { background-color: #1d4ed8; }
+        button:disabled { background-color: #9ca3af; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+    <h2>🎪 제5회 청춘아울렛 부스 현황</h2>
+    <div id="booth-list">데이터를 불러오는 중입니다...</div>
+
+    <script>
+        // Google Apps Script URL 적용 완료
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqOWrRkRwHmh5r8RLeyESsrHSlHsiNRXbxnfhPnRdGxmiJLchVc5w6-I0dTIH2b_s3BA/exec"; 
+
+        // 부스 목록 설정 (필요 시 수정 가능)
+        const booths = [
+            "1호 부스: 체험 부스 A",
+            "2호 부스: 체험 부스 B",
+            "3호 부스: 정책 퀴즈 부스",
+            "4호 부스: 무료 나눔 부스"
+        ];
+
+        let currentCounts = {};
+
+        // 실시간 카운트 불러오기
+        async function fetchCounts() {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                currentCounts = await response.json();
+                renderBooths();
+            } catch (e) {
+                console.error("데이터 로딩 실패", e);
+                document.getElementById("booth-list").innerText = "데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.";
+            }
+        }
+
+        // 화면에 부스 카드 그리기
+        function renderBooths() {
+            const listDiv = document.getElementById("booth-list");
+            listDiv.innerHTML = "";
+
+            booths.forEach(booth => {
+                const count = currentCounts[booth] || 0;
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+                    <div class="booth-name">${booth}</div>
+                    <div class="count-info">현재 참여자 수: <span class="count-display">${count}</span>명</div>
+                    <button onclick="addParticipant('${booth}', this)">방문 카운트 +1</button>
+                `;
+                listDiv.appendChild(card);
+            });
+        }
+
+        // 카운트 증가 처리
+        async function addParticipant(boothName, btnElement) {
+            btnElement.disabled = true;
+            btnElement.innerText = "기록 중...";
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ boothName: boothName })
+                });
+                alert(`${boothName} 방문이 기록되었습니다!`);
+            } catch (e) {
+                alert("기록 전송에 실패했습니다.");
+            } finally {
+                fetchCounts();
+            }
+        }
+
+        // 페이지 로드 시 시작
+        fetchCounts();
+    </script>
+</body>
+</html>
