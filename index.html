@@ -32,6 +32,59 @@
       color: #666;
       margin: 0;
     }
+
+    /* 카테고리 메인 홈 */
+    .category-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .category-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .category-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      border-color: var(--primary);
+    }
+    .cat-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #1A252C;
+      margin-bottom: 8px;
+    }
+    .cat-count {
+      font-size: 0.9rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* 부스 상세 목록 뷰 */
+    .view-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .btn-back {
+      background: #E9ECEF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #495057;
+      font-size: 0.9rem;
+    }
     .booth-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -46,10 +99,18 @@
       flex-direction: column;
       justify-content: space-between;
     }
+    .booth-group {
+      font-size: 0.8rem;
+      color: #888;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
     .booth-title {
       font-size: 1rem;
       font-weight: bold;
       margin-bottom: 8px;
+      color: #212529;
+      line-height: 1.3;
     }
     .count-badge {
       font-size: 0.85rem;
@@ -66,9 +127,6 @@
       cursor: pointer;
       width: 100%;
       font-size: 0.95rem;
-    }
-    .btn-open-modal:active {
-      opacity: 0.85;
     }
 
     /* Modal Styles */
@@ -93,10 +151,12 @@
       overflow-y: auto;
     }
     .modal-header {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: bold;
       margin-bottom: 12px;
       text-align: center;
+      color: #1A252C;
+      line-height: 1.4;
     }
     .form-group {
       margin-bottom: 16px;
@@ -186,10 +246,16 @@
     <p>부스 방문객 명부 등록 시스템</p>
   </div>
 
-  <div class="booth-grid" id="boothGrid">
-    <div style="text-align:center; grid-column: 1/-1; padding: 40px; color: #888;">
-      데이터를 불러오는 중입니다...
+  <!-- 1. 카테고리 메인 홈 -->
+  <div id="categoryHome" class="category-container"></div>
+
+  <!-- 2. 부스 상세 목록 페이지 (초기 숨김) -->
+  <div id="boothDetailView" style="display: none;">
+    <div class="view-header">
+      <button class="btn-back" onclick="showCategoryHome()">← 카테고리 선택</button>
+      <h2 id="currentCategoryTitle" style="font-size: 1.1rem; margin: 0;">존 이름</h2>
     </div>
+    <div class="booth-grid" id="boothGrid"></div>
   </div>
 
   <!-- 입력 모달 팝업 -->
@@ -237,45 +303,90 @@
   </div>
 
   <script>
-    // 방금 발급해주신 최신 GAS 웹 앱 URL 반영
     const GAS_URL = "https://script.google.com/macros/s/AKfycbx7K2-pcqW-SuSGLIBpH9QxNE4QPr-O6azqh_-VQRMEn0qrw6wnFUQUL_ftkA4Fck43sg/exec";
-    
-    const booths = [
-      "1. 청년정책플러스", "2. 시흥청년협의체", "3. 청년스테이션", "4. 청년예술가",
-      "5. 청년창업지원", "6. 일자리센터", "7. 마음건강상담", "8. 청년협동조합",
-      "9. 시흥청년네트워크", "10. 청년문화마을", "11. 청소년재단", "12. 시흥시의회",
-      "13. 대학생기획단", "14. 청년공동체", "15. 사회적기업", "16. 시흥창업센터",
-      "17. 지역활력소", "18. 청년동아리A", "19. 청년동아리B", "20. 청년동아리C",
-      "21. 스타트업Zone", "22. 핸드메이드마켓A", "23. 핸드메이드마켓B", "24. 체험부스1",
-      "25. 체험부스2", "26. 체험부스3", "27. 체험부스4", "28. 푸드트럭Zone1",
-      "29. 푸드트럭Zone2", "30. 포토존", "31. 이벤트Zone", "32. 상담Zone",
-      "33. 청년농부", "34. 로컬크리에이터", "35. 환경캠페인", "36. 서포터즈",
-      "37. 시흥시청소년수련관", "38. 정왕청소년문화의집", "39. 목감청소년문화의집", "40. 배곧청소년문화의집",
-      "41. 신천청소년문화의집", "42. 능곡청소년문화의집", "43. 군자동청소년문화의집", "44. 월곶청소년문화의집",
-      "45. 과림청소년문화의집", "46. 운영본부", "47. 의료지원단"
-    ];
 
+    // 4개 카테고리 및 부스 데이터 구성
+    const boothData = {
+      "청년정책플러스": [
+        { group: "시흥시청소년청년재단", name: "시흥시청소년청년재단 테니샵" },
+        { group: "청년스테이션(청년성장프로젝트)", name: "2026 시흥 청년 취업 클래스 '청성프'" },
+        { group: "한국공학대학교", name: "한국공학대학교 대학일자리플러스센터" },
+        { group: "청년청소년과 청년정책팀", name: "[시흥청년알리미] SNS 홍보 이벤트" },
+        { group: "시흥시정신건강복지센터", name: "내마음 알아보기: 우울 자가진단 및 마음돌봄부스" },
+        { group: "(사)가치있는누림 시흥지부", name: "청년도전지원사업, 당신의 도전 신호 ON" },
+        { group: "시흥여성인력개발센터", name: "돌려라 룰렛, 펼처라 커리어!" },
+        { group: "시흥고용복지플러스센터", name: "시흥고용복지플러스센터" }
+      ],
+      "비상청(청년동아리)": [
+        { group: "mvp", name: "Volleyball Party" },
+        { group: "병아리크루", name: "“너… 혹시 악력 몇이야?” 악력챌린지" },
+        { group: "청년서포터즈 매일", name: "청년서포터즈 매일의 스트레스 클리닉" },
+        { group: "500", name: "500의 맛지도&콜라챌린지" },
+        { group: "카드뭉치", name: "시흥시 청년 보드게임&타로 동아리 '카드뭉치'" },
+        { group: "틈새기획단", name: "컬러컬러링" },
+        { group: "아티스트웨이", name: "아티스트웨이" },
+        { group: "핑크덤벨", name: "핑크 덤벨" },
+        { group: "입소문낫단", name: "입소문낫단-시흥 로컬 맛집 큐레이션 채널" },
+        { group: "불량패션", name: "나만의 키링 만들기" },
+        { group: "청년정책협의체 공동체복지분과", name: "고립·은둔 청년 인식 설문조사" },
+        { group: "두드림", name: "청년의 시간을 맞춰라! 청년문화예술정책 설문 & 9.19초 챌린지" },
+        { group: "mecha_lab", name: "MechaLab과 함께하는 공학 체험기" },
+        { group: "미미당", name: "ME:OK 스탬프 팝업 체험" },
+        { group: "익투스", name: "책장 속에 담는 오늘의 우리: 보드게임&DIY 사진 책갈피 만들기" },
+        { group: "탁상공론", name: "탁상공론" },
+        { group: "청춘동행", name: "내 손안의 안정, 워리스톤(Worry Stone)" },
+        { group: "어푸어푸", name: "수영하는 청년들, 어푸어푸" },
+        { group: "해답", name: "해답: 바다에서 답을 찾다" },
+        { group: "터틀즈", name: "터틀즈" },
+        { group: "씨부엉", name: "코딩 좀 할 줄 아세요?" },
+        { group: "P_use", name: "P_use Archive(퓨즈아카이브)" },
+        { group: "말꽃도서관", name: "다 함께 자유로운 동화책, 말꽃도서관" }
+      ],
+      "청플마켓": [
+        { group: "에스디지컴퍼니", name: "천냥마트" },
+        { group: "롱앤봄", name: "커피박으로 놀자" },
+        { group: "네모지구공방", name: "네모지구공방의 제로웨이스트&양말목공예" },
+        { group: "시흥 딜라잇공방", name: "시흥 딜라잇공방" },
+        { group: "오어오브제", name: "오어오브제" },
+        { group: "큐트큐트", name: "귀엽고 귀여운 소품 세상" },
+        { group: "씨캐스트", name: "초록방울" },
+        { group: "청년협업마을 뉴프랜드", name: "시흥시 청년 창업가 콜라보 부스 in 청년협업마을" },
+        { group: "라탄공방오브비/청문함(서보은)", name: "라탄 공방 오브비" },
+        { group: "달월마켓", name: "달월마켓_나만의 컵꾸하기" }
+      ],
+      "전시존": [
+        { group: "레코더즈", name: "좋아하는 순간을 사진으로 기록하는 사람들, 레코더즈" },
+        { group: "청년문화예술지원사업_아트플리마켓", name: "아트플리마켓" },
+        { group: "작업할건대학교 시흥", name: "작업할건대학교 시흥 아트 예술상점 2호" },
+        { group: "작업할건대학원 시흥", name: "작업할건대학원 시흥 아트 예술상점 1호" },
+        { group: "청년문화예술지원사업_우리들의 별(북페어)", name: "우리들의 별" },
+        { group: "경기과학기술대학교 '잔상'", name: "경기과학기술대학교 '잔상' 동아리 전시" }
+      ]
+    };
+
+    let activeCategory = "";
     let currentBooth = "";
     let selectedCategory = "";
     let boothCounts = {};
 
     function init() {
-      booths.forEach(b => boothCounts[b] = 0);
+      // 카운트 객체 초기화
+      Object.keys(boothData).forEach(cat => {
+        boothData[cat].forEach(b => {
+          boothCounts[b.name] = 0;
+        });
+      });
       fetchCounts();
     }
 
     function fetchCounts() {
-      // 2초 후 무조건 강제 화면 출력 (로딩 멈춤 방지 안전장치)
-      const forceRenderTimer = setTimeout(() => {
-        renderGrid();
-      }, 2000);
+      const forceTimer = setTimeout(() => renderCategoryHome(), 2000);
 
       fetch(GAS_URL)
         .then(res => res.json())
         .then(res => {
-          clearTimeout(forceRenderTimer);
+          clearTimeout(forceTimer);
           if (res.result === "success" && Array.isArray(res.data)) {
-            booths.forEach(b => boothCounts[b] = 0);
             const data = res.data;
             for (let i = 1; i < data.length; i++) {
               const boothName = data[i][1];
@@ -284,27 +395,69 @@
               }
             }
           }
-          renderGrid();
+          renderCategoryHome();
+          if (activeCategory) renderBoothGrid(activeCategory);
         })
         .catch(err => {
-          clearTimeout(forceRenderTimer);
-          console.error("데이터 로딩 중 예외 발생:", err);
-          renderGrid();
+          clearTimeout(forceTimer);
+          console.error(err);
+          renderCategoryHome();
         });
     }
 
-    function renderGrid() {
+    function renderCategoryHome() {
+      const catContainer = document.getElementById("categoryHome");
+      catContainer.innerHTML = "";
+
+      Object.keys(boothData).forEach(catName => {
+        const list = boothData[catName];
+        let catTotal = 0;
+        list.forEach(b => catTotal += boothCounts[b.name]);
+
+        const card = document.createElement("div");
+        card.className = "category-card";
+        card.onclick = () => showBoothDetail(catName);
+        card.innerHTML = `
+          <div>
+            <div class="cat-title">${catName}</div>
+            <div style="font-size: 0.85rem; color: #666;">총 ${list.length}개 부스</div>
+          </div>
+          <div class="cat-count" style="margin-top: 16px;">누적 방문자: ${catTotal}명 →</div>
+        `;
+        catContainer.appendChild(card);
+      });
+    }
+
+    function showBoothDetail(catName) {
+      activeCategory = catName;
+      document.getElementById("categoryHome").style.display = "none";
+      document.getElementById("boothDetailView").style.display = "block";
+      document.getElementById("currentCategoryTitle").innerText = catName;
+      renderBoothGrid(catName);
+    }
+
+    function showCategoryHome() {
+      activeCategory = "";
+      document.getElementById("boothDetailView").style.display = "none";
+      document.getElementById("categoryHome").style.display = "grid";
+      renderCategoryHome();
+    }
+
+    function renderBoothGrid(catName) {
       const grid = document.getElementById("boothGrid");
       grid.innerHTML = "";
-      booths.forEach(booth => {
+
+      boothData[catName].forEach(booth => {
+        const count = boothCounts[booth.name] || 0;
         const card = document.createElement("div");
         card.className = "booth-card";
         card.innerHTML = `
           <div>
-            <div class="booth-title">${booth}</div>
-            <div class="count-badge">누적 방문: <strong>${boothCounts[booth]}</strong>명</div>
+            <div class="booth-group">${booth.group}</div>
+            <div class="booth-title">${booth.name}</div>
+            <div class="count-badge">누적 방문: <strong>${count}</strong>명</div>
           </div>
-          <button class="btn-open-modal" onclick="openModal('${booth}')">방문자 등록</button>
+          <button class="btn-open-modal" onclick="openModal('${booth.name}')">방문자 등록</button>
         `;
         grid.appendChild(card);
       });
@@ -316,7 +469,6 @@
       document.getElementById("modalBoothTitle").innerText = `[${boothName}] 방문 등록`;
       document.getElementById("userName").value = "";
       document.getElementById("privacyAgree").checked = false;
-      
       document.querySelectorAll(".cat-btn").forEach(btn => btn.classList.remove("selected"));
       document.getElementById("modalOverlay").style.display = "flex";
     }
@@ -355,20 +507,16 @@
         agreed: agree
       };
 
-      // 화면에 반영 후 모달 닫기
       boothCounts[currentBooth]++;
-      renderGrid();
+      if (activeCategory) renderBoothGrid(activeCategory);
       closeModal();
 
-      // 구글 시트로 데이터 전송
       fetch(GAS_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      }).catch(err => {
-        console.error("데이터 전송 오류:", err);
-      });
+      }).catch(err => console.error(err));
     }
 
     window.onload = init;
