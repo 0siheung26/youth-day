@@ -99,6 +99,16 @@
       flex-direction: column;
       justify-content: space-between;
     }
+    .booth-number {
+      display: inline-block;
+      background: #EBF8FF;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
     .booth-group {
       font-size: 0.8rem;
       color: #888;
@@ -305,62 +315,62 @@
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbx7K2-pcqW-SuSGLIBpH9QxNE4QPr-O6azqh_-VQRMEn0qrw6wnFUQUL_ftkA4Fck43sg/exec";
 
-    // 4개 카테고리 및 부스 데이터 구성
+    // 부스 번호가 포함된 데이터 구성
     const boothData = {
       "청년정책플러스": [
-        { group: "시흥시청소년청년재단", name: "시흥시청소년청년재단 테니샵" },
-        { group: "청년스테이션(청년성장프로젝트)", name: "2026 시흥 청년 취업 클래스 '청성프'" },
-        { group: "한국공학대학교", name: "한국공학대학교 대학일자리플러스센터" },
-        { group: "청년청소년과 청년정책팀", name: "[시흥청년알리미] SNS 홍보 이벤트" },
-        { group: "시흥시정신건강복지센터", name: "내마음 알아보기: 우울 자가진단 및 마음돌봄부스" },
-        { group: "(사)가치있는누림 시흥지부", name: "청년도전지원사업, 당신의 도전 신호 ON" },
-        { group: "시흥여성인력개발센터", name: "돌려라 룰렛, 펼처라 커리어!" },
-        { group: "시흥고용복지플러스센터", name: "시흥고용복지플러스센터" }
+        { id: "01", group: "시흥시청소년청년재단", name: "시흥시청소년청년재단 테니샵" },
+        { id: "02", group: "청년스테이션(청년성장프로젝트)", name: "2026 시흥 청년 취업 클래스 '청성프'" },
+        { id: "03", group: "한국공학대학교", name: "한국공학대학교 대학일자리플러스센터" },
+        { id: "04", group: "청년청소년과 청년정책팀", name: "[시흥청년알리미] SNS 홍보 이벤트" },
+        { id: "05", group: "시흥시정신건강복지센터", name: "내마음 알아보기: 우울 자가진단 및 마음돌봄부스" },
+        { id: "06", group: "(사)가치있는누림 시흥지부", name: "청년도전지원사업, 당신의 도전 신호 ON" },
+        { id: "07", group: "시흥여성인력개발센터", name: "돌려라 룰렛, 펼처라 커리어!" },
+        { id: "08", group: "시흥고용복지플러스센터", name: "시흥고용복지플러스센터" }
       ],
       "비상청(청년동아리)": [
-        { group: "mvp", name: "Volleyball Party" },
-        { group: "병아리크루", name: "“너… 혹시 악력 몇이야?” 악력챌린지" },
-        { group: "청년서포터즈 매일", name: "청년서포터즈 매일의 스트레스 클리닉" },
-        { group: "500", name: "500의 맛지도&콜라챌린지" },
-        { group: "카드뭉치", name: "시흥시 청년 보드게임&타로 동아리 '카드뭉치'" },
-        { group: "틈새기획단", name: "컬러컬러링" },
-        { group: "아티스트웨이", name: "아티스트웨이" },
-        { group: "핑크덤벨", name: "핑크 덤벨" },
-        { group: "입소문낫단", name: "입소문낫단-시흥 로컬 맛집 큐레이션 채널" },
-        { group: "불량패션", name: "나만의 키링 만들기" },
-        { group: "청년정책협의체 공동체복지분과", name: "고립·은둔 청년 인식 설문조사" },
-        { group: "두드림", name: "청년의 시간을 맞춰라! 청년문화예술정책 설문 & 9.19초 챌린지" },
-        { group: "mecha_lab", name: "MechaLab과 함께하는 공학 체험기" },
-        { group: "미미당", name: "ME:OK 스탬프 팝업 체험" },
-        { group: "익투스", name: "책장 속에 담는 오늘의 우리: 보드게임&DIY 사진 책갈피 만들기" },
-        { group: "탁상공론", name: "탁상공론" },
-        { group: "청춘동행", name: "내 손안의 안정, 워리스톤(Worry Stone)" },
-        { group: "어푸어푸", name: "수영하는 청년들, 어푸어푸" },
-        { group: "해답", name: "해답: 바다에서 답을 찾다" },
-        { group: "터틀즈", name: "터틀즈" },
-        { group: "씨부엉", name: "코딩 좀 할 줄 아세요?" },
-        { group: "P_use", name: "P_use Archive(퓨즈아카이브)" },
-        { group: "말꽃도서관", name: "다 함께 자유로운 동화책, 말꽃도서관" }
+        { id: "09", group: "mvp", name: "Volleyball Party" },
+        { id: "10", group: "병아리크루", name: "“너… 혹시 악력 몇이야?” 악력챌린지" },
+        { id: "11", group: "청년서포터즈 매일", name: "청년서포터즈 매일의 스트레스 클리닉" },
+        { id: "12", group: "500", name: "500의 맛지도&콜라챌린지" },
+        { id: "13", group: "카드뭉치", name: "시흥시 청년 보드게임&타로 동아리 '카드뭉치'" },
+        { id: "14", group: "틈새기획단", name: "컬러컬러링" },
+        { id: "15", group: "아티스트웨이", name: "아티스트웨이" },
+        { id: "16", group: "핑크덤벨", name: "핑크 덤벨" },
+        { id: "17", group: "입소문낫단", name: "입소문낫단-시흥 로컬 맛집 큐레이션 채널" },
+        { id: "18", group: "불량패션", name: "나만의 키링 만들기" },
+        { id: "19", group: "청년정책협의체 공동체복지분과", name: "고립·은둔 청년 인식 설문조사" },
+        { id: "20", group: "두드림", name: "청년의 시간을 맞춰라! 청년문화예술정책 설문 & 9.19초 챌린지" },
+        { id: "21", group: "mecha_lab", name: "MechaLab과 함께하는 공학 체험기" },
+        { id: "22", group: "미미당", name: "ME:OK 스탬프 팝업 체험" },
+        { id: "23", group: "익투스", name: "책장 속에 담는 오늘의 우리: 보드게임&DIY 사진 책갈피 만들기" },
+        { id: "24", group: "탁상공론", name: "탁상공론" },
+        { id: "25", group: "청춘동행", name: "내 손안의 안정, 워리스톤(Worry Stone)" },
+        { id: "26", group: "어푸어푸", name: "수영하는 청년들, 어푸어푸" },
+        { id: "27", group: "해답", name: "해답: 바다에서 답을 찾다" },
+        { id: "28", group: "터틀즈", name: "터틀즈" },
+        { id: "29", group: "씨부엉", name: "코딩 좀 할 줄 아세요?" },
+        { id: "30", group: "P_use", name: "P_use Archive(퓨즈아카이브)" },
+        { id: "31", group: "말꽃도서관", name: "다 함께 자유로운 동화책, 말꽃도서관" }
       ],
       "청플마켓": [
-        { group: "에스디지컴퍼니", name: "천냥마트" },
-        { group: "롱앤봄", name: "커피박으로 놀자" },
-        { group: "네모지구공방", name: "네모지구공방의 제로웨이스트&양말목공예" },
-        { group: "시흥 딜라잇공방", name: "시흥 딜라잇공방" },
-        { group: "오어오브제", name: "오어오브제" },
-        { group: "큐트큐트", name: "귀엽고 귀여운 소품 세상" },
-        { group: "씨캐스트", name: "초록방울" },
-        { group: "청년협업마을 뉴프랜드", name: "시흥시 청년 창업가 콜라보 부스 in 청년협업마을" },
-        { group: "라탄공방오브비/청문함(서보은)", name: "라탄 공방 오브비" },
-        { group: "달월마켓", name: "달월마켓_나만의 컵꾸하기" }
+        { id: "32", group: "에스디지컴퍼니", name: "천냥마트" },
+        { id: "33", group: "롱앤봄", name: "커피박으로 놀자" },
+        { id: "34", group: "네모지구공방", name: "네모지구공방의 제로웨이스트&양말목공예" },
+        { id: "35", group: "시흥 딜라잇공방", name: "시흥 딜라잇공방" },
+        { id: "36", group: "오어오브제", name: "오어오브제" },
+        { id: "37", group: "큐트큐트", name: "귀엽고 귀여운 소품 세상" },
+        { id: "38", group: "씨캐스트", name: "초록방울" },
+        { id: "39", group: "청년협업마을 뉴프랜드", name: "시흥시 청년 창업가 콜라보 부스 in 청년협업마을" },
+        { id: "40", group: "라탄공방오브비/청문함(서보은)", name: "라탄 공방 오브비" },
+        { id: "41", group: "달월마켓", name: "달월마켓_나만의 컵꾸하기" }
       ],
       "전시존": [
-        { group: "레코더즈", name: "좋아하는 순간을 사진으로 기록하는 사람들, 레코더즈" },
-        { group: "청년문화예술지원사업_아트플리마켓", name: "아트플리마켓" },
-        { group: "작업할건대학교 시흥", name: "작업할건대학교 시흥 아트 예술상점 2호" },
-        { group: "작업할건대학원 시흥", name: "작업할건대학원 시흥 아트 예술상점 1호" },
-        { group: "청년문화예술지원사업_우리들의 별(북페어)", name: "우리들의 별" },
-        { group: "경기과학기술대학교 '잔상'", name: "경기과학기술대학교 '잔상' 동아리 전시" }
+        { id: "42", group: "레코더즈", name: "좋아하는 순간을 사진으로 기록하는 사람들, 레코더즈" },
+        { id: "43", group: "청년문화예술지원사업_아트플리마켓", name: "아트플리마켓" },
+        { id: "44", group: "작업할건대학교 시흥", name: "작업할건대학교 시흥 아트 예술상점 2호" },
+        { id: "45", group: "작업할건대학원 시흥", name: "작업할건대학원 시흥 아트 예술상점 1호" },
+        { id: "46", group: "청년문화예술지원사업_우리들의 별(북페어)", name: "우리들의 별" },
+        { id: "47", group: "경기과학기술대학교 '잔상'", name: "경기과학기술대학교 '잔상' 동아리 전시" }
       ]
     };
 
@@ -373,7 +383,8 @@
       // 카운트 객체 초기화
       Object.keys(boothData).forEach(cat => {
         boothData[cat].forEach(b => {
-          boothCounts[b.name] = 0;
+          const fullTitle = `[부스 ${b.id}] ${b.name}`;
+          boothCounts[fullTitle] = 0;
         });
       });
       fetchCounts();
@@ -412,7 +423,10 @@
       Object.keys(boothData).forEach(catName => {
         const list = boothData[catName];
         let catTotal = 0;
-        list.forEach(b => catTotal += boothCounts[b.name]);
+        list.forEach(b => {
+          const fullTitle = `[부스 ${b.id}] ${b.name}`;
+          catTotal += (boothCounts[fullTitle] || 0);
+        });
 
         const card = document.createElement("div");
         card.className = "category-card";
@@ -448,25 +462,27 @@
       grid.innerHTML = "";
 
       boothData[catName].forEach(booth => {
-        const count = boothCounts[booth.name] || 0;
+        const fullTitle = `[부스 ${booth.id}] ${booth.name}`;
+        const count = boothCounts[fullTitle] || 0;
         const card = document.createElement("div");
         card.className = "booth-card";
         card.innerHTML = `
           <div>
+            <div><span class="booth-number">부스 ${booth.id}</span></div>
             <div class="booth-group">${booth.group}</div>
             <div class="booth-title">${booth.name}</div>
             <div class="count-badge">누적 방문: <strong>${count}</strong>명</div>
           </div>
-          <button class="btn-open-modal" onclick="openModal('${booth.name}')">방문자 등록</button>
+          <button class="btn-open-modal" onclick="openModal('${fullTitle}')">방문자 등록</button>
         `;
         grid.appendChild(card);
       });
     }
 
-    function openModal(boothName) {
-      currentBooth = boothName;
+    function openModal(fullBoothTitle) {
+      currentBooth = fullBoothTitle;
       selectedCategory = "";
-      document.getElementById("modalBoothTitle").innerText = `[${boothName}] 방문 등록`;
+      document.getElementById("modalBoothTitle").innerText = `${fullBoothTitle} 방문 등록`;
       document.getElementById("userName").value = "";
       document.getElementById("privacyAgree").checked = false;
       document.querySelectorAll(".cat-btn").forEach(btn => btn.classList.remove("selected"));
