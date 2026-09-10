@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2026 제5회 시흥 청년의 날 부스 방문자 집계</title>
+  <title>2026년 제5회 시흥시 청년의날 청춘아울렛</title>
   <style>
     :root {
       --primary: #4A90E2;
+      --notice-color: #FF6B6B;
       --bg: #F5F7FA;
       --card-bg: #FFFFFF;
       --text: #333333;
@@ -31,6 +32,33 @@
       font-size: 0.9rem;
       color: #666;
       margin: 0;
+    }
+
+    /* 공지사항 배너/카드 */
+    .notice-card {
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      color: white;
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.25);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    .notice-card:hover {
+      transform: translateY(-2px);
+    }
+    .notice-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .notice-sub {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-top: 4px;
     }
 
     /* 카테고리 메인 홈 */
@@ -68,7 +96,7 @@
       font-weight: 600;
     }
 
-    /* 부스 상세 목록 뷰 */
+    /* 부스 및 공지 상세 뷰 공통 */
     .view-header {
       display: flex;
       align-items: center;
@@ -85,6 +113,47 @@
       color: #495057;
       font-size: 0.9rem;
     }
+
+    /* 공지사항 상세 영역 */
+    .notice-content-box {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .notice-section {
+      margin-bottom: 24px;
+    }
+    .notice-section h3 {
+      font-size: 1.05rem;
+      color: #1A252C;
+      border-left: 4px solid var(--notice-color);
+      padding-left: 8px;
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+    .notice-img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid #E0E0E0;
+    }
+    .btn-survey {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: #28A745;
+      color: white;
+      text-decoration: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1rem;
+      box-sizing: border-box;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+    }
+
+    /* 부스 그리드 */
     .booth-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -252,17 +321,57 @@
 <body>
 
   <div class="header">
-    <h1>2026 제5회 시흥 청년의 날</h1>
+    <h1>2026년 제5회 시흥시 청년의날 청춘아울렛</h1>
     <p>부스 방문객 명부 등록 시스템</p>
   </div>
 
-  <!-- 1. 카테고리 메인 홈 -->
-  <div id="categoryHome" class="category-container"></div>
+  <!-- 메인 홈 영역 -->
+  <div id="mainHomeView">
+    <!-- 상단 공지사항 배너 -->
+    <div class="notice-card" onclick="showNoticeDetail()">
+      <div>
+        <div class="notice-title">📢 행사장 안내 및 스탬프 이벤트</div>
+        <div class="notice-sub">청춘아울렛 부스맵 / 럭키드로우 이벤트 / 관람객 설문조사</div>
+      </div>
+      <div style="font-size: 1.2rem;">➔</div>
+    </div>
 
-  <!-- 2. 부스 상세 목록 페이지 (초기 숨김) -->
+    <!-- 4개 카테고리 존 -->
+    <div id="categoryHome" class="category-container"></div>
+  </div>
+
+  <!-- 공지사항 상세 페이지 (초기 숨김) -->
+  <div id="noticeDetailView" style="display: none;">
+    <div class="view-header">
+      <button class="btn-back" onclick="showMainHome()">← 메인으로 돌아가기</button>
+      <h2 style="font-size: 1.1rem; margin: 0;">행사 안내 및 이벤트</h2>
+    </div>
+    <div class="notice-content-box">
+      <!-- 1. 부스 배치도 이미지 -->
+      <div class="notice-section">
+        <h3>🗺️ 청춘아울렛 부스맵</h3>
+        <img src="청년의날 부스맵.png" alt="청춘아울렛 부스맵" class="notice-img" onerror="this.src='https://via.placeholder.com/600x400?text=%EB%B6%80%EC%8A%A4%EB%B7%B9+%EC%9D%B4%EB%AF%B8%EC%A7%80+%ED%8C%8C%EC%9D%BC%EC%9D%84+%EC%B0%BE%EC%9D%84+%EC%88%98+%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4';">
+      </div>
+
+      <!-- 2. 럭키드로우 이벤트 이미지 -->
+      <div class="notice-section">
+        <h3>🎁 럭키드로우 이벤트</h3>
+        <img src="럭키드로우 이벤트.png" alt="럭키드로우 이벤트" class="notice-img" onerror="this.src='https://via.placeholder.com/600x400?text=%EB%9F%AD%ED%82%A4%EB%93%9C%EB%A1%9C%EC%9A%B0+%EC%9D%B4%EB%AF%B8%EC%A7%80+%ED%8C%8C%EC%9D%BC%EC%9D%84+%EC%B0%BE%EC%9D%84+%EC%88%98+%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4';">
+      </div>
+
+      <!-- 3. 관람객 설문조사 링크 -->
+      <div class="notice-section" style="margin-bottom: 0;">
+        <h3>📝 관람객 만족도 설문조사</h3>
+        <p style="font-size: 0.9rem; color: #555; margin-bottom: 12px;">더 나은 행사를 위해 관람객 여러분의 소중한 의견을 들려주세요!</p>
+        <a href="https://forms.google.com" target="_blank" class="btn-survey">📋 설문조사 참여하기 ➔</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 부스 상세 목록 페이지 (초기 숨김) -->
   <div id="boothDetailView" style="display: none;">
     <div class="view-header">
-      <button class="btn-back" onclick="showCategoryHome()">← 카테고리 선택</button>
+      <button class="btn-back" onclick="showMainHome()">← 카테고리 선택</button>
       <h2 id="currentCategoryTitle" style="font-size: 1.1rem; margin: 0;">존 이름</h2>
     </div>
     <div class="booth-grid" id="boothGrid"></div>
@@ -294,7 +403,7 @@
 
       <div class="privacy-box">
         <strong>[개인정보 수집 및 이용 동의 안내]</strong><br>
-        • 수집·이용 목적: 2026 제5회 청년의 날 기념행사 방문객 집계<br>
+        • 수집·이용 목적: 2026년 제5회 시흥시 청년의날 청춘아울렛 방문객 집계<br>
         • 수집 항목: 이름, 성별, 연령대<br>
         • 보유 및 이용 기간: 행사 종료 및 성과 보고 완료 후 90일 이내 파기<br>
         * 동의를 거부할 수 있으나, 거부 시 이벤트 참여가 제한될 수 있습니다.
@@ -315,7 +424,6 @@
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbx7K2-pcqW-SuSGLIBpH9QxNE4QPr-O6azqh_-VQRMEn0qrw6wnFUQUL_ftkA4Fck43sg/exec";
 
-    // 보내주신 전달 데이터 기준 실제 번호 할당
     const boothData = {
       "청년정책플러스": [
         { id: "1", group: "시흥시청소년청년재단", name: "시흥시청소년청년재단 테니샵" },
@@ -325,7 +433,7 @@
         { id: "5", group: "시흥시정신건강복지센터", name: "내마음 알아보기: 우울 자가진단 및 마음돌봄부스" },
         { id: "6", group: "(사)가치있는누림 시흥지부", name: "청년도전지원사업, 당신의 도전 신호 ON" },
         { id: "7", group: "시흥여성인력개발센터", name: "돌려라 룰렛, 펼처라 커리어!" },
-        { id: "8", group: "시흥고용복지플러스센터", name: "(로고)고용노동부안간고용노동지청 (로고)시흥고용복지플러스센터" }
+        { id: "8", group: "고용노동부안산고용노동지청 시흥고용복지플러스센터", name: "시흥고용복지플러스센터" }
       ],
       "비상청(청년동아리)": [
         { id: "1", group: "mvp", name: "Volleyball Party" },
@@ -380,7 +488,6 @@
     let boothCounts = {};
 
     function init() {
-      // 카운트 객체 초기화
       Object.keys(boothData).forEach(cat => {
         boothData[cat].forEach(b => {
           const fullTitle = `[부스 ${b.id}] ${b.name}`;
@@ -442,18 +549,26 @@
       });
     }
 
+    function showNoticeDetail() {
+      document.getElementById("mainHomeView").style.display = "none";
+      document.getElementById("boothDetailView").style.display = "none";
+      document.getElementById("noticeDetailView").style.display = "block";
+    }
+
     function showBoothDetail(catName) {
       activeCategory = catName;
-      document.getElementById("categoryHome").style.display = "none";
+      document.getElementById("mainHomeView").style.display = "none";
+      document.getElementById("noticeDetailView").style.display = "none";
       document.getElementById("boothDetailView").style.display = "block";
       document.getElementById("currentCategoryTitle").innerText = catName;
       renderBoothGrid(catName);
     }
 
-    function showCategoryHome() {
+    function showMainHome() {
       activeCategory = "";
       document.getElementById("boothDetailView").style.display = "none";
-      document.getElementById("categoryHome").style.display = "grid";
+      document.getElementById("noticeDetailView").style.display = "none";
+      document.getElementById("mainHomeView").style.display = "block";
       renderCategoryHome();
     }
 
