@@ -3,655 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2026년 제5회 시흥시 청년의날 청춘아울렛</title>
+  <title>2026년 제5회 시흥시 청년의 날 「청춘아울렛」</title>
   <style>
     :root {
-      --primary: #4A90E2;
-      --notice-color: #FF6B6B;
-      --bg: #F5F7FA;
-      --card-bg: #FFFFFF;
-      --text: #333333;
+      --policy-color: #2e7d32; /* 초록색 */
+      --market-color: #1565c0; /* 파랑색 */
+      --bisang-color: #e65100; /* 주황색 */
+      --exhibit-color: #f57f17; /* 노랑색 */
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #333333;
     }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 16px;
+      padding: 0;
     }
-    .header {
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
       text-align: center;
+      padding: 24px 12px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       margin-bottom: 20px;
     }
-    .header h1 {
+
+    h1 {
       font-size: 1.4rem;
-      margin-bottom: 6px;
-      color: #1A252C;
-    }
-    .header p {
-      font-size: 0.9rem;
-      color: #666;
-      margin: 0;
+      font-weight: 700;
+      word-break: keep-all;
+      line-height: 1.4;
     }
 
-    /* 공지사항 배너/카드 */
-    .notice-card {
-      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-      color: white;
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.25);
-      cursor: pointer;
+    .category-tabs {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: transform 0.2s;
-    }
-    .notice-card:hover {
-      transform: translateY(-2px);
-    }
-    .notice-title {
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-    .notice-sub {
-      font-size: 0.85rem;
-      opacity: 0.9;
-      margin-top: 4px;
-    }
-
-    /* 카테고리 메인 홈 */
-    .category-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .category-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 24px 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      border: 2px solid transparent;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .category-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-      border-color: var(--primary);
-    }
-    .cat-title {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #1A252C;
-      margin-bottom: 8px;
-    }
-    .cat-count {
-      font-size: 0.9rem;
-      color: var(--primary);
-      font-weight: 600;
-    }
-
-    /* 부스 및 공지 상세 뷰 공통 */
-    .view-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-    .btn-back {
-      background: #E9ECEF;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      color: #495057;
-      font-size: 0.9rem;
-    }
-
-    /* 공지사항 상세 영역 */
-    .notice-content-box {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .notice-section {
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
       margin-bottom: 24px;
     }
-    .notice-section h3 {
-      font-size: 1.05rem;
-      color: #1A252C;
-      border-left: 4px solid var(--notice-color);
-      padding-left: 8px;
-      margin-top: 0;
-      margin-bottom: 12px;
+
+    .tab-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .notice-img {
+
+    /* 탭별 색상 지정 */
+    .tab-btn.policy { background-color: var(--policy-color); }
+    .tab-btn.market { background-color: var(--market-color); }
+    .tab-btn.bisang { background-color: var(--bisang-color); }
+    .tab-btn.exhibit { background-color: var(--exhibit-color); color: #212121; } /* 노란색은 어두운 글자색 */
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .section-card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: #111;
+      border-left: 4px solid #333;
+      padding-left: 10px;
+    }
+
+    .sub-title {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .img-container {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 12px;
+      background-color: #eee;
+    }
+
+    .img-container img {
       width: 100%;
       height: auto;
-      border-radius: 12px;
-      border: 1px solid #E0E0E0;
-    }
-    .btn-survey {
       display: block;
-      width: 100%;
-      text-align: center;
-      background: #28A745;
-      color: white;
-      text-decoration: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 1rem;
-      box-sizing: border-box;
-      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
-    }
-
-    /* 부스 그리드 */
-    .booth-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
-    }
-    .booth-card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .booth-number {
-      display: inline-block;
-      background: #EBF8FF;
-      color: var(--primary);
-      font-size: 0.8rem;
-      font-weight: bold;
-      padding: 2px 8px;
-      border-radius: 4px;
-      margin-bottom: 6px;
-    }
-    .booth-group {
-      font-size: 0.8rem;
-      color: #888;
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
-    .booth-title {
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: #212529;
-      line-height: 1.3;
-    }
-    .count-badge {
-      font-size: 0.85rem;
-      color: #666;
-      margin-bottom: 12px;
-    }
-    .btn-open-modal {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      font-size: 0.95rem;
-    }
-
-    /* Modal Styles */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-    .modal-content {
-      background: white;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 440px;
-      padding: 20px;
-      box-sizing: border-box;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .modal-header {
-      font-size: 1.05rem;
-      font-weight: bold;
-      margin-bottom: 12px;
-      text-align: center;
-      color: #1A252C;
-      line-height: 1.4;
-    }
-    .form-group {
-      margin-bottom: 16px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-    .form-group input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #DDD;
-      border-radius: 8px;
-      box-sizing: border-box;
-      font-size: 0.95rem;
-    }
-    .category-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    .cat-btn {
-      padding: 10px 6px;
-      border: 1px solid #E0E0E0;
-      background: #F9F9F9;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      text-align: center;
-      font-weight: 500;
-    }
-    .cat-btn.selected {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      font-weight: bold;
-    }
-    .privacy-box {
-      background: #F8F9FA;
-      border: 1px solid #E9ECEF;
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 0.75rem;
-      color: #555;
-      line-height: 1.4;
-      margin-bottom: 12px;
-    }
-    .privacy-checkbox {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      margin-bottom: 16px;
-    }
-    .modal-actions {
-      display: flex;
-      gap: 8px;
-    }
-    .btn-submit {
-      flex: 2;
-      background: #28A745;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .btn-cancel {
-      flex: 1;
-      background: #6C757D;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      cursor: pointer;
+      object-fit: contain;
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>2026년 제5회 시흥시 청년의날 청춘아울렛</h1>
-    <p>부스 방문객 명부 등록 시스템</p>
-  </div>
+  <header>
+    <h1>2026년 제5회 시흥시 청년의 날<br>「청춘아울렛」</h1>
+  </header>
 
-  <!-- 메인 홈 영역 -->
-  <div id="mainHomeView">
-    <!-- 상단 공지사항 배너 -->
-    <div class="notice-card" onclick="showNoticeDetail()">
-      <div>
-        <div class="notice-title">📢 행사장 안내 및 스탬프 이벤트</div>
-        <div class="notice-sub">청춘아울렛 부스맵 / 럭키드로우 이벤트 / 관람객 설문조사</div>
-      </div>
-      <div style="font-size: 1.2rem;">➔</div>
-    </div>
+  <!-- 요청하신 색상이 반영된 카테고리 탭 -->
+  <nav class="category-tabs">
+    <button class="tab-btn policy">청년정책플러스</button>
+    <button class="tab-btn market">청플마켓</button>
+    <button class="tab-btn bisang">비상청</button>
+    <button class="tab-btn exhibit">전시</button>
+  </nav>
 
-    <!-- 4개 카테고리 존 -->
-    <div id="categoryHome" class="category-container"></div>
-  </div>
+  <main>
+    <!-- 1. 부스 참여 인원 등록 시스템 -->
+    <section class="section-card">
+      <h2>부스 참여 인원 등록 시스템<br>시흥시청소년청년재단</h2>
+      <p class="sub-title">행사 부스 참여 및 관람객 현황 등록</p>
+    </section>
 
-  <!-- 공지사항 상세 페이지 (초기 숨김) -->
-  <div id="noticeDetailView" style="display: none;">
-    <div class="view-header">
-      <button class="btn-back" onclick="showMainHome()">← 메인으로 돌아가기</button>
-      <h2 style="font-size: 1.1rem; margin: 0;">행사 안내 및 이벤트</h2>
-    </div>
-    <div class="notice-content-box">
-      <!-- 1. 부스 배치도 이미지 -->
-      <div class="notice-section">
-        <h3>🗺️ 청춘아울렛 부스맵</h3>
-        <img src="청년의날 부스맵.png" alt="청춘아울렛 부스맵" class="notice-img" onerror="this.src='https://via.placeholder.com/600x400?text=%EB%B6%80%EC%8A%A4%EB%B7%B9+%EC%9D%B4%EB%AF%B8%EC%A7%80+%ED%8C%8C%EC%9D%BC%EC%9D%84+%EC%B0%BE%EC%9D%84+%EC%88%98+%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4';">
-      </div>
-
-      <!-- 2. 럭키드로우 이벤트 이미지 -->
-      <div class="notice-section">
-        <h3>🎁 럭키드로우 이벤트</h3>
-        <img src="럭키드로우 이벤트.png" alt="럭키드로우 이벤트" class="notice-img" onerror="this.src='https://via.placeholder.com/600x400?text=%EB%9F%AD%ED%82%A4%EB%93%9C%EB%A1%9C%EC%9A%B0+%EC%9D%B4%EB%AF%B8%EC%A7%80+%ED%8C%8C%EC%9D%BC%EC%9D%84+%EC%B0%BE%EC%9D%84+%EC%88%98+%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4';">
-      </div>
-
-      <!-- 3. 관람객 설문조사 링크 -->
-      <div class="notice-section" style="margin-bottom: 0;">
-        <h3>📝 관람객 만족도 설문조사</h3>
-        <p style="font-size: 0.9rem; color: #555; margin-bottom: 12px;">더 나은 행사를 위해 관람객 여러분의 소중한 의견을 들려주세요!</p>
-        <a href="https://forms.google.com" target="_blank" class="btn-survey">📋 설문조사 참여하기 ➔</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 부스 상세 목록 페이지 (초기 숨김) -->
-  <div id="boothDetailView" style="display: none;">
-    <div class="view-header">
-      <button class="btn-back" onclick="showMainHome()">← 카테고리 선택</button>
-      <h2 id="currentCategoryTitle" style="font-size: 1.1rem; margin: 0;">존 이름</h2>
-    </div>
-    <div class="booth-grid" id="boothGrid"></div>
-  </div>
-
-  <!-- 입력 모달 팝업 -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-content">
-      <div class="modal-header" id="modalBoothTitle">부스 정보</div>
+    <!-- 2. 행사장 안내 및 스탬프 이벤트 -->
+    <section class="section-card">
+      <h2>행사장 안내 및 스탬프 이벤트</h2>
+      <p class="sub-title">부스 위치 정보 및 스탬프 투어 이벤트 안내</p>
       
-      <div class="form-group">
-        <label for="userName">방문자 이름 <span style="color:red;">*</span></label>
-        <input type="text" id="userName" placeholder="이름을 입력해 주세요">
+      <div class="img-container" style="margin-bottom: 16px;">
+        <img src="./청년의날 부스맵.png" alt="청년의날 부스맵">
       </div>
 
-      <div class="form-group">
-        <label>성별 / 연령대 선택 <span style="color:red;">*</span></label>
-        <div class="category-grid">
-          <button type="button" class="cat-btn" onclick="selectCategory(this, '20미만(남)')">20미만(남)</button>
-          <button type="button" class="cat-btn" onclick="selectCategory(this, '20미만(여)')">20미만(여)</button>
-          <button type="button" class="cat-btn" onclick="selectCategory(this, '20-24(남)')">20-24(남)</button>
-          <button type="button" class="cat-btn" onclick="selectCategory(this, '20-24(여)')">20-24(여)</button>
-          <button type="button" class="cat-btn" onclick="selectCategory(this, '25-39(남)')">25-39(남)</button>
-          <button type="button" class="cat-btn" onclick="selectCategory(this, '25-39(여)')">25-39(여)</button>
-          <button type="button" class="cat-btn" onclick="selectCategory(this, '39초과(남)')">39초과(남)</button>
-          <button type="button" class="cat-btn" onclick="selectCategory(this, '39초과(여)')">39초과(여)</button>
-        </div>
+      <div class="img-container">
+        <img src="./럭키드로우 이벤트.png" alt="럭키드로우 이벤트">
       </div>
+    </section>
+  </main>
 
-      <div class="privacy-box">
-        <strong>[개인정보 수집 및 이용 동의 안내]</strong><br>
-        • 수집·이용 목적: 2026년 제5회 시흥시 청년의날 청춘아울렛 방문객 집계<br>
-        • 수집 항목: 이름, 성별, 연령대<br>
-        • 보유 및 이용 기간: 행사 종료 및 성과 보고 완료 후 90일 이내 파기<br>
-        * 동의를 거부할 수 있으나, 거부 시 이벤트 참여가 제한될 수 있습니다.
-      </div>
-
-      <div class="privacy-checkbox">
-        <input type="checkbox" id="privacyAgree">
-        <label for="privacyAgree">개인정보 수집 및 이용에 동의합니다.</label>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeModal()">취소</button>
-        <button class="btn-submit" onclick="submitData()">등록하기</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbx7K2-pcqW-SuSGLIBpH9QxNE4QPr-O6azqh_-VQRMEn0qrw6wnFUQUL_ftkA4Fck43sg/exec";
-
-    const boothData = {
-      "청년정책플러스": [
-        { id: "1", group: "시흥시청소년청년재단", name: "시흥시청소년청년재단 테니샵" },
-        { id: "2", group: "청년스테이션(청년성장프로젝트)", name: "2026 시흥 청년 취업 클래스 '청성프'" },
-        { id: "3", group: "한국공학대학교", name: "한국공학대학교 대학일자리플러스센터" },
-        { id: "4", group: "청년청소년과 청년정책팀", name: "[시흥청년알리미] SNS 홍보 이벤트" },
-        { id: "5", group: "시흥시정신건강복지센터", name: "내마음 알아보기: 우울 자가진단 및 마음돌봄부스" },
-        { id: "6", group: "(사)가치있는누림 시흥지부", name: "청년도전지원사업, 당신의 도전 신호 ON" },
-        { id: "7", group: "시흥여성인력개발센터", name: "돌려라 룰렛, 펼처라 커리어!" },
-        { id: "8", group: "고용노동부안산고용노동지청 시흥고용복지플러스센터", name: "시흥고용복지플러스센터" }
-      ],
-      "비상청(청년동아리)": [
-        { id: "1", group: "mvp", name: "Volleyball Party" },
-        { id: "2", group: "병아리크루", name: "“너… 혹시 악력 몇이야?”악력챌린지" },
-        { id: "3", group: "청년서포터즈 매일", name: "청년서포터즈 매일의 스트레스 클리닉" },
-        { id: "4", group: "500", name: "500의 맛지도&콜라챌린지" },
-        { id: "5", group: "카드뭉치", name: "시흥시 청년 보드게임&타로 동아리 '카드뭉치'" },
-        { id: "6", group: "틈새기획단", name: "컬러컬러링" },
-        { id: "7", group: "아티스트웨이", name: "아티스트웨이" },
-        { id: "8", group: "핑크덤벨", name: "핑크 덤벨" },
-        { id: "9", group: "입소문낫단", name: "입소문낫단-시흥 로컬 맛집 큐레이션 채널" },
-        { id: "10", group: "불량패션", name: "나만의 키링 만들기" },
-        { id: "11", group: "청년정책협의체 공동체복지분과", name: "청년정책협의체 공동체복지분과-고립·은둔 청년 인식 설문조사" },
-        { id: "12", group: "두드림", name: "청년의 시간을 맞춰라! 청년문화예술정책 설문 &9.19초 챌린지" },
-        { id: "13", group: "mecha_lab", name: "MechaLab과 함께하는 공학 체험기" },
-        { id: "14", group: "미미당", name: "ME:OK 스탬프 팝업 체험" },
-        { id: "15", group: "익투스", name: "책장 속에 담는 오늘의 우리: 보드게임&DIY 사진 책갈피 만들기" },
-        { id: "16", group: "탁상공론", name: "탁상공론" },
-        { id: "17", group: "청춘동행", name: "내 손안의 안정, 워리스톤(Worry Stone)" },
-        { id: "18", group: "어푸어푸", name: "수영하는 청년들, 어푸어푸" },
-        { id: "19", group: "해답", name: "해답: 바다에서 답을 찾다" },
-        { id: "20", group: "터틀즈", name: "터틀즈" },
-        { id: "21", group: "씨부엉", name: "코딩 좀 할 줄 아세요?" },
-        { id: "22", group: "P_use", name: "P_use Archive(퓨즈아카이브)" },
-        { id: "23", group: "말꽃도서관", name: "다 함께 자유로운 동화책, 말꽃도서관" }
-      ],
-      "청플마켓": [
-        { id: "1", group: "에스디지컴퍼니", name: "천냥마트" },
-        { id: "2", group: "롱앤봄", name: "커피박으로 놀자" },
-        { id: "3", group: "네모지구공방", name: "네모지구공방의 제로웨이스트&양말목공예" },
-        { id: "4", group: "시흥 딜라잇공방", name: "시흥 딜라잇공방" },
-        { id: "5", group: "오어오브제", name: "오어오브제" },
-        { id: "6", group: "큐트큐트", name: "귀엽고 귀여운 소품 세상" },
-        { id: "7", group: "씨캐스트", name: "초록방울" },
-        { id: "8", group: "청년협업마을 뉴프랜드", name: "시흥시 청년 창업가 콜라보 부스 in 청년협업마을" },
-        { id: "9", group: "라탄공방오브비/청문함(서보은)", name: "라탄 공방 오브비" },
-        { id: "10", group: "달월마켓", name: "달월마켓_나만의 컵꾸하기" }
-      ],
-      "전시존": [
-        { id: "전시1", group: "레코더즈", name: "좋아하는 순간을 사진으로 기록하는 사람들, 레코더즈" },
-        { id: "전시2", group: "청년문화예술지원사업_아트플리마켓", name: "아트플리마켓" },
-        { id: "전시3", group: "작업할건대학교 시흥", name: "작업할건대학교 시흥 아트 예술상점 2호" },
-        { id: "전시4", group: "작업할건대학원 시흥", name: "작업할건대학원 시흥 아트 예술상점 1호" },
-        { id: "전시5", group: "청년문화예술지원사업_우리들의 별(북페어)", name: "우리들의 별" },
-        { id: "전시6", group: "경기과학기술대학교 '잔상'", name: "경기과학기술대학교 '잔상' 동아리 전시" }
-      ]
-    };
-
-    let activeCategory = "";
-    let currentBooth = "";
-    let selectedCategory = "";
-    let boothCounts = {};
-
-    function init() {
-      Object.keys(boothData).forEach(cat => {
-        boothData[cat].forEach(b => {
-          const fullTitle = `[부스 ${b.id}] ${b.name}`;
-          boothCounts[fullTitle] = 0;
-        });
-      });
-      fetchCounts();
-    }
-
-    function fetchCounts() {
-      const forceTimer = setTimeout(() => renderCategoryHome(), 2000);
-
-      fetch(GAS_URL)
-        .then(res => res.json())
-        .then(res => {
-          clearTimeout(forceTimer);
-          if (res.result === "success" && Array.isArray(res.data)) {
-            const data = res.data;
-            for (let i = 1; i < data.length; i++) {
-              const boothName = data[i][1];
-              if (boothCounts[boothName] !== undefined) {
-                boothCounts[boothName]++;
-              }
-            }
-          }
-          renderCategoryHome();
-          if (activeCategory) renderBoothGrid(activeCategory);
-        })
-        .catch(err => {
-          clearTimeout(forceTimer);
-          console.error(err);
-          renderCategoryHome();
-        });
-    }
-
-    function renderCategoryHome() {
-      const catContainer = document.getElementById("categoryHome");
-      catContainer.innerHTML = "";
-
-      Object.keys(boothData).forEach(catName => {
-        const list = boothData[catName];
-        let catTotal = 0;
-        list.forEach(b => {
-          const fullTitle = `[부스 ${b.id}] ${b.name}`;
-          catTotal += (boothCounts[fullTitle] || 0);
-        });
-
-        const card = document.createElement("div");
-        card.className = "category-card";
-        card.onclick = () => showBoothDetail(catName);
-        card.innerHTML = `
-          <div>
-            <div class="cat-title">${catName}</div>
-            <div style="font-size: 0.85rem; color: #666;">총 ${list.length}개 부스</div>
-          </div>
-          <div class="cat-count" style="margin-top: 16px;">누적 방문자: ${catTotal}명 →</div>
-        `;
-        catContainer.appendChild(card);
-      });
-    }
-
-    function showNoticeDetail() {
-      document.getElementById("mainHomeView").style.display = "none";
-      document.getElementById("boothDetailView").style.display = "none";
-      document.getElementById("noticeDetailView").style.display = "block";
-    }
-
-    function showBoothDetail(catName) {
-      activeCategory = catName;
-      document.getElementById("mainHomeView").style.display = "none";
-      document.getElementById("noticeDetailView").style.display = "none";
-      document.getElementById("boothDetailView").style.display = "block";
-      document.getElementById("currentCategoryTitle").innerText = catName;
-      renderBoothGrid(catName);
-    }
-
-    function showMainHome() {
-      activeCategory = "";
-      document.getElementById("boothDetailView").style.display = "none";
-      document.getElementById("noticeDetailView").style.display = "none";
-      document.getElementById("mainHomeView").style.display = "block";
-      renderCategoryHome();
-    }
-
-    function renderBoothGrid(catName) {
-      const grid = document.getElementById("boothGrid");
-      grid.innerHTML = "";
-
-      boothData[catName].forEach(booth => {
-        const fullTitle = `[부스 ${booth.id}] ${booth.name}`;
-        const count = boothCounts[fullTitle] || 0;
-        const card = document.createElement("div");
-        card.className = "booth-card";
-        card.innerHTML = `
-          <div>
-            <div><span class="booth-number">부스 ${booth.id}</span></div>
-            <div class="booth-group">${booth.group}</div>
-            <div class="booth-title">${booth.name}</div>
-            <div class="count-badge">누적 방문: <strong>${count}</strong>명</div>
-          </div>
-          <button class="btn-open-modal" onclick="openModal('${fullTitle}')">방문자 등록</button>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function openModal(fullBoothTitle) {
-      currentBooth = fullBoothTitle;
-      selectedCategory = "";
-      document.getElementById("modalBoothTitle").innerText = `${fullBoothTitle} 방문 등록`;
-      document.getElementById("userName").value = "";
-      document.getElementById("privacyAgree").checked = false;
-      document.querySelectorAll(".cat-btn").forEach(btn => btn.classList.remove("selected"));
-      document.getElementById("modalOverlay").style.display = "flex";
-    }
-
-    function closeModal() {
-      document.getElementById("modalOverlay").style.display = "none";
-    }
-
-    function selectCategory(btn, category) {
-      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
-      selectedCategory = category;
-    }
-
-    function submitData() {
-      const name = document.getElementById("userName").value.trim();
-      const agree = document.getElementById("privacyAgree").checked;
-
-      if (!name) {
-        alert("이름을 입력해 주세요.");
-        return;
-      }
-      if (!selectedCategory) {
-        alert("성별/연령대를 선택해 주세요.");
-        return;
-      }
-      if (!agree) {
-        alert("개인정보 수집 및 이용 동의에 체크해 주세요.");
-        return;
-      }
-
-      const payload = {
-        boothName: currentBooth,
-        userName: name,
-        category: selectedCategory,
-        agreed: agree
-      };
-
-      boothCounts[currentBooth]++;
-      if (activeCategory) renderBoothGrid(activeCategory);
-      closeModal();
-
-      fetch(GAS_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }).catch(err => console.error(err));
-    }
-
-    window.onload = init;
-  </script>
 </body>
 </html>
-
