@@ -412,20 +412,20 @@
     const boothData = {
       "청년정책플러스": [
         { id: "1", group: "시흥시청소년청년재단", name: "시흥시청소년청년재단 테니샵" },
-        { id: "2", group: "청년스테이션(청년성장프로젝트)", name: "2026 시흥 청년 취업 클래스 '청성프'" },
+        { id: "2", group: "청년스테이션(청년성장프로젝트)", name: "2026 시흥 청년 취업 클래스 청성프" },
         { id: "3", group: "한국공학대학교", name: "한국공학대학교 대학일자리플러스센터" },
-        { id: "4", group: "청년청소년과 청년정책팀", name: "[시흥청년알리미] SNS 홍보 이벤트" },
+        { id: "4", group: "시흥시 청년청소년과 청년정책팀", name: "[시흥청년알리미] SNS 홍보 이벤트" },
         { id: "5", group: "시흥시정신건강복지센터", name: "내마음 알아보기: 우울 자가진단 및 마음돌봄부스" },
         { id: "6", group: "(사)가치있는누림 시흥지부", name: "청년도전지원사업, 당신의 도전 신호 ON" },
         { id: "7", group: "시흥여성인력개발센터", name: "돌려라 룰렛, 펼처라 커리어!" },
-        { id: "8", group: "고용노동부안산고용노동지청 시흥고용복지플러스센터", name: "시흥고용복지플러스센터" }
+        { id: "8", group: "시흥고용복지플러스센터", name: "고용노동부 안산고용노동지청 시흥고용복지플러스센터" }
       ],
       "비상청(청년동아리)": [
         { id: "1", group: "mvp", name: "Volleyball Party" },
         { id: "2", group: "병아리크루", name: "“너… 혹시 악력 몇이야?”악력챌린지" },
         { id: "3", group: "청년서포터즈 매일", name: "청년서포터즈 매일의 스트레스 클리닉" },
         { id: "4", group: "500", name: "500의 맛지도&콜라챌린지" },
-        { id: "5", group: "카드뭉치", name: "시흥시 청년 보드게임&타로 동아리 '카드뭉치'" },
+        { id: "5", group: "카드뭉치", name: "시흥시 청년 보드게임&타로 동아리 카드뭉치" },
         { id: "6", group: "틈새기획단", name: "컬러컬러링" },
         { id: "7", group: "아티스트웨이", name: "아티스트웨이" },
         { id: "8", group: "핑크덤벨", name: "핑크 덤벨" },
@@ -458,12 +458,12 @@
         { id: "10", group: "달월마켓", name: "달월마켓_나만의 컵꾸하기" }
       ],
       "전시존": [
-        { id: "전시1", group: "레코더즈", name: "좋아하는 순간을 사진으로 기록하는 사람들, 레코더즈" },
-        { id: "전시2", group: "청년문화예술지원사업_아트플리마켓", name: "아트플리마켓" },
-        { id: "전시3", group: "작업할건대학교 시흥", name: "작업할건대학교 시흥 아트 예술상점 2호" },
-        { id: "전시4", group: "작업할건대학원 시흥", name: "작업할건대학원 시흥 아트 예술상점 1호" },
-        { id: "전시5", group: "청년문화예술지원사업_우리들의 별(북페어)", name: "우리들의 별" },
-        { id: "전시6", group: "경기과학기술대학교 '잔상'", name: "경기과학기술대학교 '잔상' 동아리 전시" }
+        { id: "1", group: "레코더즈", name: "좋아하는 순간을 사진으로 기록하는 사람들, 레코더즈" },
+        { id: "2", group: "청년문화예술지원사업_아트플리마켓", name: "아트플리마켓" },
+        { id: "3", group: "작업할건대학교 시흥", name: "작업할건대학교 시흥 아트 예술상점 2호" },
+        { id: "4", group: "작업할건대학원 시흥", name: "작업할건대학원 시흥 아트 예술상점 1호" },
+        { id: "5", group: "청년문화예술지원사업_우리들의 별(북페어)", name: "우리들의 별" },
+        { id: "6", group: "경기과학기술대학교 '잔상'", name: "경기과학기술대학교 '잔상' 동아리 전시" }
       ]
     };
 
@@ -566,6 +566,10 @@
         const count = boothCounts[fullTitle] || 0;
         const card = document.createElement("div");
         card.className = "booth-card";
+        
+        // 작은따옴표 문법 오류 방지를 위한 안전한 함수 호출 처리
+        const safeTitle = fullTitle.replace(/'/g, "\\'");
+        
         card.innerHTML = `
           <div>
             <div><span class="booth-number">부스 ${booth.id}</span></div>
@@ -573,7 +577,7 @@
             <div class="booth-title">${booth.name}</div>
             <div class="count-badge">누적 방문: <strong>${count}</strong>명</div>
           </div>
-          <button class="btn-open-modal" onclick="openModal('${fullTitle}')">방문자 등록</button>
+          <button class="btn-open-modal" onclick="openModal('${safeTitle}')">방문자 등록</button>
         `;
         grid.appendChild(card);
       });
